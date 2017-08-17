@@ -2,6 +2,11 @@
     height: 100%;
 }
 
+.opt-box {
+    width: 400px;
+    padding: 32px;
+}
+
 .map-container {
     height: 100%;
     width: 100%;
@@ -10,4 +15,20 @@
 .container {
     height:100vh;
     display: flex;
+}
+
+.markers-data {
+    padding-left: 0;
+}
+
+.markers-data li{
+    list-style: none;
+}
+
+.filter-input {
+    box-sizing: border-box;
+    line-height: 24px;
+    padding: 8px;
+    width: 100%;
+    font-size: 18px;
 }

@@ -10,7 +10,12 @@
     <div class="opt-box">
         <h1>Find Your College</h1>
         <div>
-            <p>Sidebar</p>
+            <div>
+                <input class="filter-input" type="text" data-bind="value:listFilter,valueUpdate: 'afterkeydown'" placeholder="Filter">
+            </div>
+            <ul class="markers-data" data-bind="foreach:markers()">
+                <li><a href="" data-bind="text:title"></a></li>
+            </ul>
         </div>
     </div>
     <div class="map-container">
@@ -18,6 +23,7 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUnzknz658VqmMcuAurZFGoJtvT39SXDg&callback=initMap"
         async defer></script>
 <script src="js/main.js"></script>
