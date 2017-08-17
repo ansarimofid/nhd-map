@@ -45,7 +45,15 @@ function initMap() {
 
       // adding info window to marker
       marker.addListener('click', function () {
+        $this = this;
         populateInfoWindow(this, largeInfoWindow)
+
+        if (this.getAnimation() != null) {
+          this.setAnimation(null);
+        } else {
+          this.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(function(){ $this.setAnimation(null); }, 750);
+        }
       });
 
      /* // Adding effect in marker
