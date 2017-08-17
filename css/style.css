@@ -1,3 +1,7 @@
+body {
+    font-family: sans-serif;
+}
+
 #map {
     height: 100%;
 }
@@ -19,10 +23,21 @@
 
 .markers-data {
     padding-left: 0;
+    margin-top: 40px;
 }
 
 .markers-data li{
     list-style: none;
+}
+
+.markers-data li a {
+    text-decoration: none;
+    line-height:24px;
+    color: #505050;
+}
+
+.markers-data li a:hover {
+    text-decoration: underline;
 }
 
 .filter-input {
