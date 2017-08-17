@@ -14,7 +14,7 @@
                 <input class="filter-input" type="text" data-bind="value:listFilter,valueUpdate: 'afterkeydown'" placeholder="Filter">
             </div>
             <ul class="markers-data" data-bind="foreach:markers()">
-                <li><a href="" data-bind="text:title"></a></li>
+                <li data-bind="click: $parent.itemClicked.bind($data, index)"><a href="" data-bind="text:title"></a></li>
                 <hr>
             </ul>
         </div>

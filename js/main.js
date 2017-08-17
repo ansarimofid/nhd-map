@@ -12,6 +12,9 @@ function initMap() {
   // initialising bound
   var bounds = new google.maps.LatLngBounds();
 
+  // Initalizing info window
+  var largeInfoWindow = new google.maps.InfoWindow();
+
 
   var markerList = [
     {title: 'NID Collage', location: {lat: 23.187147, lng: 72.6330879}, index:0},
@@ -59,10 +62,6 @@ function initMap() {
   //refresh Marker based on Filter
   function refreshMarkers(markerList) {
     hideListing(markers);
-
-    var bounds = new google.maps.LatLngBounds();
-
-    console.log("Mrkkk");
     console.log(markerList());
 
     markerList().forEach(function (data) {
@@ -73,8 +72,23 @@ function initMap() {
 
       bounds.extend(markers[data.index].position);
     });
+  }
 
-    map.fitBounds(bounds);
+  //Show single marker
+  function showOnly(markerIndex) {
+    // hideListing(markers);
+    // console.log(markerList());
+
+    // markers[markerIndex].setMap(map);
+
+    // markers.push(markers[markerIndex]);
+    // bounds.extend(markers[markerIndex].position);
+    // markers[markerIndex].infowindow.open(map, markers[markerIndex]);
+    // bounds.extend(markers[markerIndex].position);
+
+    populateInfoWindow(markers[markerIndex], largeInfoWindow);
+
+    map.fitBounds(bounds)
   }
 
   // function to hide all the marker
@@ -97,7 +111,7 @@ function initMap() {
       });
     }
     // Fitting the bound
-    map.fitBounds(bounds);
+    // map.fitBounds(bounds);
   }
 
 
@@ -144,6 +158,11 @@ function initMap() {
 
     self.refreshMarkers = function () {
       refreshMarkers(self.markers)
+    };
+
+    self.itemClicked = function (markerIndex) {
+      showOnly(markerIndex);
+      // console.log("I'm"+index);
     }
   }
 
