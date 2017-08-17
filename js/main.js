@@ -17,12 +17,12 @@ function initMap() {
 
 
   var markerList = [
-    {title: 'NID Collage', location: {lat: 23.187147, lng: 72.6330879}, index:0},
-    {title: 'Pandit Deendayal Petroleum University', location: {lat: 23.156006, lng: 72.666237},  index:1},
-    {title: 'Gujarat National Law University', location: {lat: 23.155102, lng: 72.662572}, index:2},
-    {
-      title: 'Dhirubhai Ambani Institute of Information and Communication Technology',
-      location: {lat: 23.189248, lng: 72.629019}, index:3
+    {title: 'Adalaj', location: {lat:23.168367, lng: 72.578154}, index:0},
+    {title: 'Indroda Nature Park', location: {lat: 23.192648, lng: 72.646181},  index:1},
+    {title: 'Akshardham', location: {lat: 23.233017, lng: 72.674728}, index:2},
+    {title: 'Mahatma Mandir', location: {lat: 23.231685, lng: 72.633469}, index:3
+    },
+    {title: 'Sardar Patel Statue', location: {lat: 23.224083, lng: 72.647523}, index:4
     }];
 
 // Initialiszng markers
@@ -49,6 +49,8 @@ function initMap() {
         populateInfoWindow(this, largeInfoWindow)
       });
     }
+
+    map.fitBounds(bounds)
   }
 
   //refresh Marker based on Filter
@@ -80,7 +82,9 @@ function initMap() {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
       infowindow.marker = marker;
-      infowindow.setContent('<div>' + marker.title + '</div>');
+
+      addLocationInfo(marker, infowindow);
+      // infowindow.setContent('<div>' + marker.title + '</div>');
       infowindow.open(map, marker);
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick',function(){
@@ -94,6 +98,42 @@ function initMap() {
         setTimeout(function(){ marker.setAnimation(null); }, 750);
       }
     }
+  }
+
+  function addLocationInfo(marker, infowindow) {
+    console.log(marker);
+    var req_url = 'https://api.foursquare.com/v2/venues/search?v=20161016';
+    var client_id = 'XIQU3FJIHMPZEUPBBNOSQBO53M5M2BIDQQXYBDUGP5VQDSBZ';
+    var client_secret = 'XDLSEQG2FOOR3L050IHVGYEA1YH5Y1Z4DTJXEPP0K41GNGGF';
+    var ll = marker.getPosition().lat()+','+marker.getPosition().lng();
+    var query = marker.title;
+
+    req_url+='&client_id='+client_id+'&client_secret='+client_secret+'&ll='+ll+'&query='+query;
+
+    $.getJSON( req_url, function(data) {
+      console.log( data );
+
+      var place = data.response.venues[0];
+      var markerHtml = '<strong>'+marker.title+'</strong><br>';
+
+      if (place.categories.length) {
+        markerHtml+= '<strong>Category:</strong>'+place.categories[0].name+'<br>';
+      }
+
+      markerHtml+= '<strong>Address:</strong>';
+      if (place.location.address !== undefined) {
+        markerHtml+= place.location.address+'<br>';
+      }
+
+      markerHtml+=place.location.city+','+place.location.country;
+
+      infowindow.setContent(markerHtml);
+
+    })
+      .fail(function() {
+        infowindow.setContent("Error Loading Details");
+      })
+
   }
 
 
@@ -139,11 +179,13 @@ function initMap() {
     }
   }
 
-  initMarkers();
-  var MLVM = new MarkerListViewModel()
-  ko.applyBindings(MLVM);
+  $(document).ready(function () {
+    initMarkers();
+    var MLVM = new MarkerListViewModel()
+    ko.applyBindings(MLVM);
 
-  MLVM.listFilter.subscribe(function () {
-    MLVM.refreshMarkers();
+    MLVM.listFilter.subscribe(function () {
+      MLVM.refreshMarkers();
+    })
   })
 }
