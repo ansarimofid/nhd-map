@@ -47,23 +47,7 @@ function initMap() {
       marker.addListener('click', function () {
         $this = this;
         populateInfoWindow(this, largeInfoWindow)
-
-        if (this.getAnimation() != null) {
-          this.setAnimation(null);
-        } else {
-          this.setAnimation(google.maps.Animation.BOUNCE);
-          setTimeout(function(){ $this.setAnimation(null); }, 750);
-        }
       });
-
-     /* // Adding effect in marker
-      marker.addListener('mouseover', function () {
-        this.setIcon(highlightedIcon)
-      });
-
-      marker.addListener('mouseout', function () {
-        this.setIcon(defaultIcon)
-      });*/
     }
   }
 
@@ -73,29 +57,14 @@ function initMap() {
     console.log(markerList());
 
     markerList().forEach(function (data) {
-      console.log("Mrkkk");
-      console.log(data);
-
       markers[data.index].setMap(map);
-
-      bounds.extend(markers[data.index].position);
     });
   }
 
   //Show single marker
   function showOnly(markerIndex) {
-    // hideListing(markers);
-    // console.log(markerList());
-
-    // markers[markerIndex].setMap(map);
-
-    // markers.push(markers[markerIndex]);
-    // bounds.extend(markers[markerIndex].position);
-    // markers[markerIndex].infowindow.open(map, markers[markerIndex]);
-    // bounds.extend(markers[markerIndex].position);
-
     populateInfoWindow(markers[markerIndex], largeInfoWindow);
-
+    bounds.extend(markers[markerIndex].position);
     map.fitBounds(bounds)
   }
 
@@ -117,9 +86,14 @@ function initMap() {
       infowindow.addListener('closeclick',function(){
         infowindow.setMarker = null;
       });
+
+      if (marker.getAnimation() != null) {
+        marker.setAnimation(null);
+      } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function(){ marker.setAnimation(null); }, 750);
+      }
     }
-    // Fitting the bound
-    // map.fitBounds(bounds);
   }
 
 
@@ -135,26 +109,17 @@ function initMap() {
 
     self.listFilter = ko.observable('');
 
-    // console.log(self.listFilter());
-
     self.markerList = markerList;
 
-    // self.markers = ko.observableArray(markerList);
     self.markers = ko.computed(function () {
       var filter = self.listFilter();
 
 
       if (filter === '') {
-        console.log(filter);
         return self.markerList
       } else {
         var tempList = self.markerList.slice();
-
-        console.log("New List");
-        console.log("Filter "+filter);
         return tempList.filter(function (marker) {
-          console.log(marker);
-          console.log(" Res "+marker.title.indexOf(filter))
           return marker.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
         })
       }
