@@ -112,7 +112,7 @@ function initMap() {
 
   // Adds location info from 'foursquare api' to infowindow
   function addLocationInfo(marker, infowindow) {
-    console.log(marker);
+    // console.log(marker);
     var req_url = 'https://api.foursquare.com/v2/venues/search?v=20161016';
     var client_id = 'XIQU3FJIHMPZEUPBBNOSQBO53M5M2BIDQQXYBDUGP5VQDSBZ';
     var client_secret = 'XDLSEQG2FOOR3L050IHVGYEA1YH5Y1Z4DTJXEPP0K41GNGGF';
@@ -185,6 +185,11 @@ function initMap() {
       showOnly(markerIndex);
     };
   }
+
+  // mapLoadError shows error when google maps failed to load
+  mapLoadError = function() {
+    alert('Google maps failed to load. Try reloading the page.');
+  };
 
   // Initialises the functiom on document load
   $(document).ready(function () {
