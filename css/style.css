@@ -47,3 +47,38 @@ body {
     width: 100%;
     font-size: 18px;
 }
+
+.opt-hide {
+    margin-right: -464px;
+}
+
+.sidebar-toggle {
+    margin-bottom: 12px;
+    position: relative;
+    cursor: pointer;
+}
+
+.sidebar-toggle .menu,.sidebar-toggle .menu:before,.sidebar-toggle .menu:after{
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background-color: #000;
+    content: " ";
+    display: block;
+}
+
+.sidebar-toggle .menu {
+    top:4px;
+}
+
+.sidebar-toggle .text {
+    margin-left: 32px;
+}
+
+.sidebar-toggle .menu:before {
+    top: 4px;
+}
+
+.sidebar-toggle .menu:after {
+    top: 9px;
+}

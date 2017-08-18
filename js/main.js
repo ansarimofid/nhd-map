@@ -187,5 +187,9 @@ function initMap() {
     MLVM.listFilter.subscribe(function () {
       MLVM.refreshMarkers();
     })
+
+    $('.sidebar-toggle').click(function () {
+      $('.opt-box').toggleClass('opt-hide');
+    })
   })
 }
