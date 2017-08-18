@@ -186,11 +186,6 @@ function initMap() {
     };
   }
 
-  // mapLoadError shows error when google maps failed to load
-  mapLoadError = function() {
-    alert('Google maps failed to load. Try reloading the page.');
-  };
-
   // Initialises the functiom on document load
   $(document).ready(function () {
     // initialises markers
@@ -211,3 +206,8 @@ function initMap() {
     });
   });
 }
+
+// mapLoadError shows error when google maps failed to load
+mapLoadError = function() {
+  alert('Google maps failed to load. Try reloading the page or Connect to internet');
+};
