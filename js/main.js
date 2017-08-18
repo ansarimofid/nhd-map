@@ -15,7 +15,7 @@ function initMap() {
   // Initalizing info window
   var largeInfoWindow = new google.maps.InfoWindow();
 
-
+  // Markers list array
   var markerList = [
     {title: 'Adalaj', location: {lat: 23.168367, lng: 72.578154}, index: 0},
     {title: 'Indroda Nature Park', location: {lat: 23.192648, lng: 72.646181}, index: 1},
@@ -27,9 +27,10 @@ function initMap() {
       title: 'Sardar Patel Statue', location: {lat: 23.224083, lng: 72.647523}, index: 4
     }];
 
-// Initialiszng markers
+// Initialisng markers
   var markers = [];
 
+  // initialises markers from list
   function initMarkers() {
     // creating marker from places
     for (var i = 0; i < markerList.length; i++) {
@@ -52,21 +53,22 @@ function initMap() {
       });
     }
 
+    // Filts bound as per markers
     map.fitBounds(bounds)
   }
 
   //refresh Marker based on Filter
   function refreshMarkers(markerList) {
+    // hides all markers
     hideListing(markers);
-    console.log(markerList());
-
     markerList().forEach(function (data) {
       markers[data.index].setMap(map);
     });
   }
 
-  //Show single marker
+  //Show details about single marker
   function showOnly(markerIndex) {
+    // calls infowindow function
     populateInfoWindow(markers[markerIndex], largeInfoWindow);
     bounds.extend(markers[markerIndex].position);
     map.fitBounds(bounds)
@@ -86,17 +88,18 @@ function initMap() {
       infowindow.marker = marker;
 
       addLocationInfo(marker, infowindow);
-      // infowindow.setContent('<div>' + marker.title + '</div>');
       infowindow.open(map, marker);
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function () {
         infowindow.setMarker = null;
       });
 
+      // Animates on opening infowindow
       if (marker.getAnimation() != null) {
         marker.setAnimation(null);
       } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
+        // stops animation after some time
         setTimeout(function () {
           marker.setAnimation(null);
         }, 750);
@@ -104,6 +107,7 @@ function initMap() {
     }
   }
 
+  // Adds location info from 'foursquare api' to infowindow
   function addLocationInfo(marker, infowindow) {
     console.log(marker);
     var req_url = 'https://api.foursquare.com/v2/venues/search?v=20161016';
@@ -114,6 +118,7 @@ function initMap() {
 
     req_url += '&client_id=' + client_id + '&client_secret=' + client_secret + '&ll=' + ll + '&query=' + query;
 
+    // Makes ajax request to load data from third party api
     $.getJSON(req_url, function (data) {
       console.log(data);
 
@@ -134,31 +139,25 @@ function initMap() {
       infowindow.setContent(markerHtml);
 
     })
-      .fail(function () {
+      .fail(function () {//Called when request fails
         infowindow.setContent("Error Loading Details");
       })
 
   }
 
-
-  function Marker(data) {
-    this.title = data.title;
-    this.location = data.location;
-  }
-
+  // Marker model
   function MarkerListViewModel() {
     var self = this;
 
-    console.log("From marker");
-
+    // creates marker filter value
     self.listFilter = ko.observable('');
 
+    // initialises marker list
     self.markerList = markerList;
 
+    //filters marker based on supplied filter value
     self.markers = ko.computed(function () {
       var filter = self.listFilter();
-
-
       if (filter === '') {
         return self.markerList
       } else {
@@ -173,25 +172,32 @@ function initMap() {
 
     };
 
+    // refreshes markers based on filter value
     self.refreshMarkers = function () {
       refreshMarkers(self.markers)
     };
 
+    // calls when an item is clicked from list
     self.itemClicked = function (markerIndex) {
       showOnly(markerIndex);
-      // console.log("I'm"+index);
     }
   }
 
+  // Initialises the functiom on document load
   $(document).ready(function () {
+    // initialises markers
     initMarkers();
+
+    // Knockoutjs initialisation
     var MLVM = new MarkerListViewModel()
     ko.applyBindings(MLVM);
 
+    // Adds function binding on filter value change
     MLVM.listFilter.subscribe(function () {
       MLVM.refreshMarkers();
-    })
+    });
 
+    // sidebar toggle for responsiveness
     $('.sidebar-toggle').click(function () {
       $('.opt-box').toggleClass('opt-hide');
     })
