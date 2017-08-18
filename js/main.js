@@ -47,15 +47,18 @@ function initMap() {
       bounds.extend(marker.position);
 
       // adding info window to marker
-      marker.addListener('click', function () {
-        $this = this;
-        populateInfoWindow(this, largeInfoWindow)
-      });
+      marker.addListener('click', markerClickHandler);
     }
 
     // Filts bound as per markers
-    map.fitBounds(bounds)
+    map.fitBounds(bounds);
   }
+
+  // Handles click event of marker
+  var markerClickHandler = function ($this) {
+    $this = this;
+    populateInfoWindow(this, largeInfoWindow);
+  };
 
   //refresh Marker based on Filter
   function refreshMarkers(markerList) {
@@ -71,7 +74,7 @@ function initMap() {
     // calls infowindow function
     populateInfoWindow(markers[markerIndex], largeInfoWindow);
     bounds.extend(markers[markerIndex].position);
-    map.fitBounds(bounds)
+    map.fitBounds(bounds);
   }
 
   // function to hide all the marker
@@ -95,7 +98,7 @@ function initMap() {
       });
 
       // Animates on opening infowindow
-      if (marker.getAnimation() != null) {
+      if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
       } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -141,7 +144,7 @@ function initMap() {
     })
       .fail(function () {//Called when request fails
         infowindow.setContent("Error Loading Details");
-      })
+      });
 
   }
 
@@ -159,12 +162,12 @@ function initMap() {
     self.markers = ko.computed(function () {
       var filter = self.listFilter();
       if (filter === '') {
-        return self.markerList
+        return self.markerList;
       } else {
         var tempList = self.markerList.slice();
         return tempList.filter(function (marker) {
-          return marker.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
-        })
+          return marker.title.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+        });
       }
     });
 
@@ -174,13 +177,13 @@ function initMap() {
 
     // refreshes markers based on filter value
     self.refreshMarkers = function () {
-      refreshMarkers(self.markers)
+      refreshMarkers(self.markers);
     };
 
     // calls when an item is clicked from list
     self.itemClicked = function (markerIndex) {
       showOnly(markerIndex);
-    }
+    };
   }
 
   // Initialises the functiom on document load
@@ -189,7 +192,7 @@ function initMap() {
     initMarkers();
 
     // Knockoutjs initialisation
-    var MLVM = new MarkerListViewModel()
+    var MLVM = new MarkerListViewModel();
     ko.applyBindings(MLVM);
 
     // Adds function binding on filter value change
@@ -200,6 +203,6 @@ function initMap() {
     // sidebar toggle for responsiveness
     $('.sidebar-toggle').click(function () {
       $('.opt-box').toggleClass('opt-hide');
-    })
-  })
+    });
+  });
 }
