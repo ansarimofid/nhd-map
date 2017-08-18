@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-    height:100vh;
+    height: 100vh;
     display: flex;
 }
 
@@ -26,13 +26,13 @@ body {
     margin-top: 40px;
 }
 
-.markers-data li{
+.markers-data li {
     list-style: none;
 }
 
 .markers-data li a {
     text-decoration: none;
-    line-height:24px;
+    line-height: 24px;
     color: #505050;
 }
 
@@ -58,7 +58,7 @@ body {
     cursor: pointer;
 }
 
-.sidebar-toggle .menu,.sidebar-toggle .menu:before,.sidebar-toggle .menu:after{
+.sidebar-toggle .menu, .sidebar-toggle .menu:before, .sidebar-toggle .menu:after {
     position: absolute;
     width: 24px;
     height: 2px;
@@ -68,7 +68,7 @@ body {
 }
 
 .sidebar-toggle .menu {
-    top:4px;
+    top: 4px;
 }
 
 .sidebar-toggle .text {
